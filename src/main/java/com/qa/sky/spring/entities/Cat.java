@@ -6,7 +6,6 @@ public class Cat {
 
 
     private String name;
-    @Min(0)
     private int age;
     private String colour;
 
