@@ -2,6 +2,8 @@ package com.qa.sky.spring.rest;
 
 
 import com.qa.sky.spring.entities.Cat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -23,6 +25,14 @@ public class CatController {
         return "Hello, World!"; // returned values are stored in response body
     }
 
+    @GetMapping("/get/{id}")
+    public ResponseEntity<?> getCat(@PathVariable int id) {
+        try {
+            return ResponseEntity.ok(this.cats.get(id));
+        } catch (IndexOutOfBoundsException e) {
+            return new ResponseEntity<>("No cat found with id: " + id, HttpStatus.NOT_FOUND);
+        }
+    }
 
     @GetMapping("/getAll")
     public List<Cat> getAll() {
@@ -31,9 +41,24 @@ public class CatController {
 
 
     @PostMapping("/create")
-    public Cat addCat(@RequestBody Cat newCat) {
+    public ResponseEntity<Cat> addCat(@RequestBody Cat newCat) {
         this.cats.add(newCat);
-        return this.cats.get(this.cats.size() - 1);
+        Cat created = this.cats.get(this.cats.size() - 1);
+        return new ResponseEntity<>(created, HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/update/{id}")
+    public Cat updateCat(@PathVariable int id,
+                         @RequestParam(required = false) String name,
+                         @RequestParam(required = false) Integer age,
+                         @RequestParam(required = false) String colour) {
+        Cat toUpdate = this.cats.get(id);
+
+        if (name != null) toUpdate.setName(name);
+        if (age != null) toUpdate.setAge(age);
+        if (colour != null) toUpdate.setColour(colour);
+
+        return toUpdate;
     }
 
 
