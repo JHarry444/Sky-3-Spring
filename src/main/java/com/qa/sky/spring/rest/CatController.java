@@ -40,16 +40,16 @@ public class CatController {
     }
 
     @PatchMapping("/update/{id}")
-    public Cat updateCat(@PathVariable int id,
-                         @RequestParam(required = false) String name,
-                         @RequestParam(required = false) Integer age,
-                         @RequestParam(required = false) String furColour) {
+    public ResponseEntity<?> updateCat(@PathVariable int id,
+                                       @RequestParam(required = false) String name,
+                                       @RequestParam(required = false) Integer age,
+                                       @RequestParam(required = false) String furColour) {
         return this.service.updateCat(id, name, age, furColour);
     }
 
 
     @DeleteMapping("/remove/{id}")
-    public Cat remove(@PathVariable int id) {
+    public ResponseEntity<?> remove(@PathVariable int id) {
         return this.service.remove(id);
     }
 }

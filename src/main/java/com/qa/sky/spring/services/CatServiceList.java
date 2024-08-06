@@ -42,18 +42,22 @@ public class CatServiceList implements CatService{
     }
 
     @Override
-    public Cat updateCat(int id, String name, Integer age, String furColour) {
+    public ResponseEntity<?> updateCat(int id, String name, Integer age, String furColour) {
         Cat toUpdate = this.cats.get(id);
 
         if (name != null) toUpdate.setName(name);
         if (age != null) toUpdate.setAge(age);
         if (furColour != null) toUpdate.setFurColour(furColour);
 
-        return toUpdate;
+        return ResponseEntity.ok(toUpdate);
     }
 
     @Override
-    public Cat remove(int id) {
-        return this.cats.remove(id);
+    public ResponseEntity<?> remove(int id) {
+        try {
+            return ResponseEntity.ok(this.cats.remove(id));
+        } catch (IndexOutOfBoundsException e) {
+            return new ResponseEntity<>("No cat found with id: " + id, HttpStatus.NOT_FOUND);
+        }
     }
 }
