@@ -44,6 +44,16 @@ public class CatServiceDB implements CatService {
         return this.repo.findAll();
     }
 
+    @Override
+    public ResponseEntity<?> getCatByName(String name) {
+        Optional<Cat> optCat = this.repo.findByNameIgnoreCase(name);
+
+        if (optCat.isPresent())
+            return ResponseEntity.ok(optCat.get());
+        else
+            return new ResponseEntity<>("No cat found with name: " + name, HttpStatus.NOT_FOUND);
+    }
+
 
     @Override
     public ResponseEntity<?> updateCat(int id, String name, Integer age, String furColour) {

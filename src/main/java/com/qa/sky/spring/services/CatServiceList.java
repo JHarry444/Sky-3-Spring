@@ -35,6 +35,11 @@ public class CatServiceList implements CatService{
     }
 
     @Override
+    public ResponseEntity<?> getCatByName(String name) {
+        return null;
+    }
+
+    @Override
     public ResponseEntity<Cat> addCat(Cat newCat) {
         this.cats.add(newCat);
         Cat created = this.cats.get(this.cats.size() - 1);

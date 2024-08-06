@@ -28,6 +28,11 @@ public class CatController {
         return this.service.getCat(id);
     }
 
+    @GetMapping("/get/name/{name}")
+    public ResponseEntity<?> getCatByName(@PathVariable String name) {
+        return this.service.getCatByName(name);
+    }
+
     @GetMapping("/getAll")
     public List<Cat> getAll() {
         return this.service.getAll();

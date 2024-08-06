@@ -13,6 +13,8 @@ public interface CatService {
     List<Cat> getAll();
 
 
+    ResponseEntity<?> getCatByName(String name);
+
     ResponseEntity<Cat> addCat(Cat newCat);
 
     ResponseEntity<?> updateCat(int id,
