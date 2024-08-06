@@ -42,12 +42,12 @@ public class CatServiceList implements CatService{
     }
 
     @Override
-    public Cat updateCat(int id, String name, Integer age, String colour) {
+    public Cat updateCat(int id, String name, Integer age, String furColour) {
         Cat toUpdate = this.cats.get(id);
 
         if (name != null) toUpdate.setName(name);
         if (age != null) toUpdate.setAge(age);
-        if (colour != null) toUpdate.setColour(colour);
+        if (furColour != null) toUpdate.setFurColour(furColour);
 
         return toUpdate;
     }

@@ -43,8 +43,8 @@ public class CatController {
     public Cat updateCat(@PathVariable int id,
                          @RequestParam(required = false) String name,
                          @RequestParam(required = false) Integer age,
-                         @RequestParam(required = false) String colour) {
-        return this.service.updateCat(id, name, age, colour);
+                         @RequestParam(required = false) String furColour) {
+        return this.service.updateCat(id, name, age, furColour);
     }
 
 

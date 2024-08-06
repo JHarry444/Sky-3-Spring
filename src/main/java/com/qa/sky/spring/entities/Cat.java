@@ -1,23 +1,40 @@
 package com.qa.sky.spring.entities;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 
+@Entity // marks the class as a table
+@Table(name = "cat") // lets you configure the created table
 public class Cat {
 
+    @Id // PK
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
+    private Integer id;
 
+    @Column(name = "name", unique = true)
     private String name;
     private int age;
-    private String colour;
+    private String furColour;
 
+    public Cat(String name, int age, String furColour) {
+        this.name = name;
+        this.age = age;
+        this.furColour = furColour;
+    }
+
+    // REQUIRED
     public Cat() {
         super();
     }
 
-    public Cat(String name, int age, String colour) {
-        super();
-        this.name = name;
-        this.age = age;
-        this.colour = colour;
+
+    // REQUIRED
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -36,20 +53,11 @@ public class Cat {
         this.age = age;
     }
 
-    public String getColour() {
-        return colour;
+    public String getFurColour() {
+        return furColour;
     }
 
-    public void setColour(String colour) {
-        this.colour = colour;
-    }
-
-    @Override
-    public String toString() {
-        return "Cat{" +
-                "name='" + name + '\'' +
-                ", age=" + age +
-                ", colour='" + colour + '\'' +
-                '}';
+    public void setFurColour(String furColour) {
+        this.furColour = furColour;
     }
 }
