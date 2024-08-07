@@ -1,5 +1,6 @@
 package com.qa.sky.spring.services;
 
+import com.qa.sky.spring.dto.PersonDTO;
 import com.qa.sky.spring.entities.Person;
 import com.qa.sky.spring.repos.PersonRepo;
 import org.springframework.context.annotation.Primary;
@@ -40,8 +41,8 @@ public class PersonService  {
     }
 
     
-    public List<Person> getAll() {
-        return this.repo.findAll();
+    public List<PersonDTO> getAll() {
+        return this.repo.findAll().stream().map(PersonDTO::new).toList();
     }
 
     

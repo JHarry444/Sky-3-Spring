@@ -1,6 +1,7 @@
 package com.qa.sky.spring.rest;
 
 
+import com.qa.sky.spring.dto.PersonDTO;
 import com.qa.sky.spring.entities.Person;
 import com.qa.sky.spring.services.PersonService;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class PersonController {
 
 
     @GetMapping("/getAll")
-    public List<Person> getAll() {
+    public List<PersonDTO> getAll() {
         return this.service.getAll();
     }
 

@@ -1,5 +1,7 @@
 package com.qa.sky.spring.services;
 
+import com.qa.sky.spring.dto.CatDTO;
+import com.qa.sky.spring.dto.CatWithOwnerDTO;
 import com.qa.sky.spring.entities.Cat;
 import com.qa.sky.spring.repos.CatRepo;
 import org.springframework.context.annotation.Primary;
@@ -49,7 +51,7 @@ public class CatServiceDB implements CatService {
         Optional<Cat> optCat = this.repo.findByNameIgnoreCase(name);
 
         if (optCat.isPresent())
-            return ResponseEntity.ok(optCat.get());
+            return ResponseEntity.ok(new CatWithOwnerDTO(optCat.get()));
         else
             return new ResponseEntity<>("No cat found with name: " + name, HttpStatus.NOT_FOUND);
     }

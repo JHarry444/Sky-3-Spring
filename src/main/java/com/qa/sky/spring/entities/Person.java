@@ -1,9 +1,8 @@
 package com.qa.sky.spring.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Person {
@@ -16,6 +15,9 @@ public class Person {
     private String name;
     private int age;
     private String job;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Cat> cats;
 
     public Person() {
     }
@@ -59,6 +61,14 @@ public class Person {
 
     public String getJob() {
         return job;
+    }
+
+    public List<Cat> getCats() {
+        return cats;
+    }
+
+    public void setCats(List<Cat> cats) {
+        this.cats = cats;
     }
 
     public void setJob(String job) {
