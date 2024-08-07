@@ -23,8 +23,9 @@ public class PersonService  {
     }
 
     
-    public ResponseEntity<Person> addPerson(Person newPerson) {
-        Person created = this.repo.save(newPerson);
+    public ResponseEntity<Person> addPerson(PersonDTO newPersonDTO) {
+        Person toSave = new Person(newPersonDTO);
+        Person created = this.repo.save(toSave);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
@@ -34,7 +35,7 @@ public class PersonService  {
 
 
         if (optPerson.isPresent())
-            return ResponseEntity.ok(optPerson.get());
+            return ResponseEntity.ok(new PersonDTO(optPerson.get()));
         else
             return new ResponseEntity<>("No person found with id: " + id, HttpStatus.NOT_FOUND);
 
@@ -62,7 +63,7 @@ public class PersonService  {
 
         Person updated = this.repo.save(toUpdate);
 
-        return ResponseEntity.ok(updated);
+        return ResponseEntity.ok(new PersonDTO(updated));
 
     }
 
@@ -72,7 +73,7 @@ public class PersonService  {
 
         if (optPerson.isPresent()) {
             this.repo.deleteById(id);
-            return ResponseEntity.ok(optPerson.get());
+            return ResponseEntity.ok(new PersonDTO(optPerson.get()));
         } else {
             return new ResponseEntity<>("No person found with id: " + id, HttpStatus.NOT_FOUND);
         }

@@ -10,7 +10,8 @@ public class CatWithOwnerDTO {
     private int age;
     private String furColour;
 
-    private String owner;
+    private Integer ownerId;
+    private String ownerName;
 
 
     public CatWithOwnerDTO() {
@@ -22,7 +23,10 @@ public class CatWithOwnerDTO {
         this.age = cat.getAge();
         this.furColour = cat.getFurColour();
 
-        if (cat.getOwner() != null) this.owner = cat.getOwner().getName();
+        if (cat.getOwner() != null) {
+            this.ownerId = cat.getOwner().getId();
+            this.ownerName = cat.getOwner().getName();
+        }
 
     }
 
@@ -58,11 +62,19 @@ public class CatWithOwnerDTO {
         this.furColour = furColour;
     }
 
-    public String getOwner() {
-        return owner;
+    public Integer getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 }

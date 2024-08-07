@@ -4,6 +4,7 @@ import com.qa.sky.spring.dto.CatDTO;
 import com.qa.sky.spring.dto.CatWithOwnerDTO;
 import com.qa.sky.spring.entities.Cat;
 import com.qa.sky.spring.repos.CatRepo;
+import com.qa.sky.spring.repos.PersonRepo;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +25,10 @@ public class CatServiceDB implements CatService {
     }
 
     @Override
-    public ResponseEntity<Cat> addCat(Cat newCat) {
-        Cat created = this.repo.save(newCat);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+    public ResponseEntity<CatWithOwnerDTO> addCat(CatWithOwnerDTO newCat) {
+        Cat toSave = new Cat(newCat);
+        Cat created = this.repo.save(toSave);
+        return new ResponseEntity<>(new CatWithOwnerDTO(created), HttpStatus.CREATED);
     }
 
     @Override
@@ -35,15 +37,15 @@ public class CatServiceDB implements CatService {
 
 
         if (optCat.isPresent())
-            return ResponseEntity.ok(optCat.get());
+            return ResponseEntity.ok(new CatWithOwnerDTO(optCat.get()));
         else
             return new ResponseEntity<>("No cat found with id: " + id, HttpStatus.NOT_FOUND);
 
     }
 
     @Override
-    public List<Cat> getAll() {
-        return this.repo.findAll();
+    public List<CatWithOwnerDTO> getAll() {
+        return this.repo.findAll().stream().map(CatWithOwnerDTO::new).toList();
     }
 
     @Override
@@ -74,7 +76,7 @@ public class CatServiceDB implements CatService {
 
         Cat updated = this.repo.save(toUpdate);
 
-        return ResponseEntity.ok(updated);
+        return ResponseEntity.ok(new CatDTO(updated));
 
     }
 
@@ -84,7 +86,7 @@ public class CatServiceDB implements CatService {
 
         if (optCat.isPresent()) {
             this.repo.deleteById(id);
-            return ResponseEntity.ok(optCat.get());
+            return ResponseEntity.ok(new CatDTO(optCat.get()));
         } else {
             return new ResponseEntity<>("No cat found with id: " + id, HttpStatus.NOT_FOUND);
         }

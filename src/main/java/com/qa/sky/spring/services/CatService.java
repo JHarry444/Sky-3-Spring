@@ -1,5 +1,7 @@
 package com.qa.sky.spring.services;
 
+import com.qa.sky.spring.dto.CatDTO;
+import com.qa.sky.spring.dto.CatWithOwnerDTO;
 import com.qa.sky.spring.entities.Cat;
 import org.springframework.http.ResponseEntity;
 
@@ -10,12 +12,12 @@ public interface CatService {
 
     ResponseEntity<?> getCat(int id);
 
-    List<Cat> getAll();
+    List<CatWithOwnerDTO> getAll();
 
 
     ResponseEntity<?> getCatByName(String name);
 
-    ResponseEntity<Cat> addCat(Cat newCat);
+    ResponseEntity<CatWithOwnerDTO> addCat(CatWithOwnerDTO newCat);
 
     ResponseEntity<?> updateCat(int id,
                                 String name,

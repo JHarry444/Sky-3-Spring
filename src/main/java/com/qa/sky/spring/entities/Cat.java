@@ -1,5 +1,6 @@
 package com.qa.sky.spring.entities;
 
+import com.qa.sky.spring.dto.CatWithOwnerDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 
@@ -28,6 +29,16 @@ public class Cat {
     // REQUIRED
     public Cat() {
         super();
+    }
+
+    public Cat(CatWithOwnerDTO newCat) {
+        this.name = newCat.getName();
+        this.age = newCat.getAge();
+        this.furColour = newCat.getFurColour();
+        if (newCat.getOwnerId() != null) {
+            this.owner = new Person();
+            this.owner.setId(newCat.getOwnerId());
+        }
     }
 
 

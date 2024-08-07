@@ -35,7 +35,7 @@ public class PersonController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<Person> addPerson(@RequestBody Person newPerson) {
+    public ResponseEntity<Person> addPerson(@RequestBody PersonDTO newPerson) {
         return this.service.addPerson(newPerson);
     }
 

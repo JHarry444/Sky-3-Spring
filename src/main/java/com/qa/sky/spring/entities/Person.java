@@ -1,5 +1,6 @@
 package com.qa.sky.spring.entities;
 
+import com.qa.sky.spring.dto.PersonDTO;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -21,6 +22,13 @@ public class Person {
 
     public Person() {
     }
+
+    public Person(PersonDTO dto) {
+        this.name = dto.getName();
+        this.job = dto.getJob();
+        this.age = dto.getAge();
+    }
+
 
     public Person(String name, int age, String job) {
         this.name = name;

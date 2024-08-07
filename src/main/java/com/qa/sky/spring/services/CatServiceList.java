@@ -1,5 +1,6 @@
 package com.qa.sky.spring.services;
 
+import com.qa.sky.spring.dto.CatWithOwnerDTO;
 import com.qa.sky.spring.entities.Cat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +31,8 @@ public class CatServiceList implements CatService{
     }
 
     @Override
-    public List<Cat> getAll() {
-         return this.cats;
+    public List<CatWithOwnerDTO> getAll() {
+         return this.cats.stream().map(CatWithOwnerDTO::new).toList();
     }
 
     @Override
@@ -40,10 +41,10 @@ public class CatServiceList implements CatService{
     }
 
     @Override
-    public ResponseEntity<Cat> addCat(Cat newCat) {
-        this.cats.add(newCat);
+    public ResponseEntity<CatWithOwnerDTO> addCat(CatWithOwnerDTO newCat) {
+        this.cats.add(new Cat(newCat));
         Cat created = this.cats.get(this.cats.size() - 1);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+        return new ResponseEntity<>(new CatWithOwnerDTO(created), HttpStatus.CREATED);
     }
 
     @Override
@@ -54,13 +55,13 @@ public class CatServiceList implements CatService{
         if (age != null) toUpdate.setAge(age);
         if (furColour != null) toUpdate.setFurColour(furColour);
 
-        return ResponseEntity.ok(toUpdate);
+        return ResponseEntity.ok(new CatWithOwnerDTO(toUpdate));
     }
 
     @Override
     public ResponseEntity<?> remove(int id) {
         try {
-            return ResponseEntity.ok(this.cats.remove(id));
+            return ResponseEntity.ok(new CatWithOwnerDTO(this.cats.remove(id)));
         } catch (IndexOutOfBoundsException e) {
             return new ResponseEntity<>("No cat found with id: " + id, HttpStatus.NOT_FOUND);
         }

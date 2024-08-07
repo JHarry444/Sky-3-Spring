@@ -1,7 +1,7 @@
 package com.qa.sky.spring.rest;
 
 
-import com.qa.sky.spring.entities.Cat;
+import com.qa.sky.spring.dto.CatWithOwnerDTO;
 import com.qa.sky.spring.services.CatService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,13 +34,14 @@ public class CatController {
     }
 
     @GetMapping("/getAll")
-    public List<Cat> getAll() {
+    public List<CatWithOwnerDTO> getAll() {
         return this.service.getAll();
     }
 
 
+    @ResponseStatus
     @PostMapping("/create")
-    public ResponseEntity<Cat> addCat(@RequestBody Cat newCat) {
+    public ResponseEntity<CatWithOwnerDTO> addCat(@RequestBody CatWithOwnerDTO newCat) {
         return this.service.addCat(newCat);
     }
 
