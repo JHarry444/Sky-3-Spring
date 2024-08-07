@@ -16,6 +16,9 @@ public class Cat {
     private int age;
     private String furColour;
 
+    @ManyToOne
+    private Person owner;
+
     public Cat(String name, int age, String furColour) {
         this.name = name;
         this.age = age;
@@ -59,5 +62,13 @@ public class Cat {
 
     public void setFurColour(String furColour) {
         this.furColour = furColour;
+    }
+
+    public Person getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Person owner) {
+        this.owner = owner;
     }
 }
