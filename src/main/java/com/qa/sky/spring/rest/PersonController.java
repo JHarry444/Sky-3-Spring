@@ -2,9 +2,8 @@ package com.qa.sky.spring.rest;
 
 
 import com.qa.sky.spring.dto.PersonDTO;
-import com.qa.sky.spring.entities.Person;
 import com.qa.sky.spring.services.PersonService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class PersonController {
 
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<?> getPerson(@PathVariable int id) {
+    public PersonDTO getPerson(@PathVariable int id) {
         return this.service.getPerson(id);
     }
 
@@ -35,21 +34,22 @@ public class PersonController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<Person> addPerson(@RequestBody PersonDTO newPerson) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public PersonDTO addPerson(@RequestBody PersonDTO newPerson) {
         return this.service.addPerson(newPerson);
     }
 
     @PatchMapping("/update/{id}")
-    public ResponseEntity<?> updatePerson(@PathVariable int id,
-                                       @RequestParam(required = false) String name,
-                                       @RequestParam(required = false) Integer age,
-                                       @RequestParam(required = false) String furColour) {
+    public PersonDTO updatePerson(@PathVariable int id,
+                                  @RequestParam(required = false) String name,
+                                  @RequestParam(required = false) Integer age,
+                                  @RequestParam(required = false) String furColour) {
         return this.service.updatePerson(id, name, age, furColour);
     }
 
 
     @DeleteMapping("/remove/{id}")
-    public ResponseEntity<?> remove(@PathVariable int id) {
+    public PersonDTO remove(@PathVariable int id) {
         return this.service.remove(id);
     }
 }

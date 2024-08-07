@@ -10,20 +10,20 @@ import java.util.List;
 public interface CatService {
 
 
-    ResponseEntity<?> getCat(int id);
+    CatWithOwnerDTO getCat(int id);
 
     List<CatWithOwnerDTO> getAll();
 
 
-    ResponseEntity<?> getCatByName(String name);
+    CatWithOwnerDTO getCatByName(String name);
 
-    ResponseEntity<CatWithOwnerDTO> addCat(CatWithOwnerDTO newCat);
+    CatWithOwnerDTO addCat(CatWithOwnerDTO newCat);
 
-    ResponseEntity<?> updateCat(int id,
+    CatWithOwnerDTO updateCat(int id,
                                 String name,
                                 Integer age,
                                 String colour);
 
 
-    ResponseEntity<?> remove(int id);
+    CatWithOwnerDTO remove(int id);
 }

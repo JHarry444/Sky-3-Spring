@@ -3,6 +3,7 @@ package com.qa.sky.spring.services;
 import com.qa.sky.spring.dto.CatDTO;
 import com.qa.sky.spring.dto.CatWithOwnerDTO;
 import com.qa.sky.spring.entities.Cat;
+import com.qa.sky.spring.exceptions.CatNotFoundException;
 import com.qa.sky.spring.repos.CatRepo;
 import com.qa.sky.spring.repos.PersonRepo;
 import org.springframework.context.annotation.Primary;
@@ -25,22 +26,16 @@ public class CatServiceDB implements CatService {
     }
 
     @Override
-    public ResponseEntity<CatWithOwnerDTO> addCat(CatWithOwnerDTO newCat) {
+    public CatWithOwnerDTO addCat(CatWithOwnerDTO newCat) {
         Cat toSave = new Cat(newCat);
         Cat created = this.repo.save(toSave);
-        return new ResponseEntity<>(new CatWithOwnerDTO(created), HttpStatus.CREATED);
+        return new CatWithOwnerDTO(created);
     }
 
     @Override
-    public ResponseEntity<?> getCat(int id) {
-        Optional<Cat> optCat = this.repo.findById(id);
-
-
-        if (optCat.isPresent())
-            return ResponseEntity.ok(new CatWithOwnerDTO(optCat.get()));
-        else
-            return new ResponseEntity<>("No cat found with id: " + id, HttpStatus.NOT_FOUND);
-
+    public CatWithOwnerDTO getCat(int id) {
+        Cat found = this.repo.findById(id).orElseThrow(CatNotFoundException::new);
+        return new CatWithOwnerDTO(found);
     }
 
     @Override
@@ -49,26 +44,15 @@ public class CatServiceDB implements CatService {
     }
 
     @Override
-    public ResponseEntity<?> getCatByName(String name) {
-        Optional<Cat> optCat = this.repo.findByNameIgnoreCase(name);
-
-        if (optCat.isPresent())
-            return ResponseEntity.ok(new CatWithOwnerDTO(optCat.get()));
-        else
-            return new ResponseEntity<>("No cat found with name: " + name, HttpStatus.NOT_FOUND);
+    public CatWithOwnerDTO getCatByName(String name) {
+        Cat found = this.repo.findByNameIgnoreCase(name).orElseThrow(CatNotFoundException::new);
+        return new CatWithOwnerDTO(found);
     }
 
 
     @Override
-    public ResponseEntity<?> updateCat(int id, String name, Integer age, String furColour) {
-        Optional<Cat> optCat = this.repo.findById(id);
-
-        Cat toUpdate = null;
-        if (optCat.isPresent()) {
-            toUpdate = optCat.get();
-        } else {
-            return new ResponseEntity<>("No cat found with id: " + id, HttpStatus.NOT_FOUND);
-        }
+    public CatWithOwnerDTO updateCat(int id, String name, Integer age, String furColour) {
+        Cat toUpdate = this.repo.findById(id).orElseThrow(CatNotFoundException::new);
 
         if (name != null) toUpdate.setName(name);
         if (age != null) toUpdate.setAge(age);
@@ -76,19 +60,13 @@ public class CatServiceDB implements CatService {
 
         Cat updated = this.repo.save(toUpdate);
 
-        return ResponseEntity.ok(new CatDTO(updated));
-
+        return new CatWithOwnerDTO(updated);
     }
 
     @Override
-    public ResponseEntity<?> remove(int id) {
-        Optional<Cat> optCat = this.repo.findById(id);
-
-        if (optCat.isPresent()) {
-            this.repo.deleteById(id);
-            return ResponseEntity.ok(new CatDTO(optCat.get()));
-        } else {
-            return new ResponseEntity<>("No cat found with id: " + id, HttpStatus.NOT_FOUND);
-        }
+    public CatWithOwnerDTO remove(int id) {
+        Cat found = this.repo.findById(id).orElseThrow(CatNotFoundException::new);
+        this.repo.deleteById(id);
+        return new CatWithOwnerDTO(found);
     }
 }

@@ -2,6 +2,7 @@ package com.qa.sky.spring.services;
 
 import com.qa.sky.spring.dto.PersonDTO;
 import com.qa.sky.spring.entities.Person;
+import com.qa.sky.spring.exceptions.PersonNotFoundException;
 import com.qa.sky.spring.repos.PersonRepo;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 @Service
 @Primary // tells spring to use this one
-public class PersonService  {
+public class PersonService {
 
 
     private PersonRepo repo;
@@ -22,40 +23,30 @@ public class PersonService  {
         this.repo = repo;
     }
 
-    
-    public ResponseEntity<Person> addPerson(PersonDTO newPersonDTO) {
+
+    public PersonDTO addPerson(PersonDTO newPersonDTO) {
         Person toSave = new Person(newPersonDTO);
         Person created = this.repo.save(toSave);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+        return new PersonDTO(created);
     }
 
-    
-    public ResponseEntity<?> getPerson(int id) {
-        Optional<Person> optPerson = this.repo.findById(id);
 
+    public PersonDTO getPerson(int id) {
+        Person found = this.repo.findById(id).orElseThrow(PersonNotFoundException::new);
 
-        if (optPerson.isPresent())
-            return ResponseEntity.ok(new PersonDTO(optPerson.get()));
-        else
-            return new ResponseEntity<>("No person found with id: " + id, HttpStatus.NOT_FOUND);
+        return new PersonDTO(found);
 
     }
 
-    
+
     public List<PersonDTO> getAll() {
         return this.repo.findAll().stream().map(PersonDTO::new).toList();
     }
 
-    
-    public ResponseEntity<?> updatePerson(int id, String name, Integer age, String job) {
-        Optional<Person> optPerson = this.repo.findById(id);
 
-        Person toUpdate = null;
-        if (optPerson.isPresent()) {
-            toUpdate = optPerson.get();
-        } else {
-            return new ResponseEntity<>("No person found with id: " + id, HttpStatus.NOT_FOUND);
-        }
+    public PersonDTO updatePerson(int id, String name, Integer age, String job) {
+        Person toUpdate = this.repo.findById(id).orElseThrow(PersonNotFoundException::new);
+
 
         if (name != null) toUpdate.setName(name);
         if (age != null) toUpdate.setAge(age);
@@ -63,19 +54,15 @@ public class PersonService  {
 
         Person updated = this.repo.save(toUpdate);
 
-        return ResponseEntity.ok(new PersonDTO(updated));
+        return new PersonDTO(updated);
 
     }
 
-    
-    public ResponseEntity<?> remove(int id) {
-        Optional<Person> optPerson = this.repo.findById(id);
 
-        if (optPerson.isPresent()) {
-            this.repo.deleteById(id);
-            return ResponseEntity.ok(new PersonDTO(optPerson.get()));
-        } else {
-            return new ResponseEntity<>("No person found with id: " + id, HttpStatus.NOT_FOUND);
-        }
+    public PersonDTO remove(int id) {
+        Person found = this.repo.findById(id).orElseThrow(PersonNotFoundException::new);
+        this.repo.deleteById(id);
+        return new PersonDTO(found);
     }
+
 }
