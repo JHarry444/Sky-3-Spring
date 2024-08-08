@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 // loads the application context (runs the spring app, so we can test it)
@@ -69,4 +70,44 @@ public class PersonControllerIntegrationTest {
         this.mvc.perform(req).andExpect(checkBody).andExpect(checkStatus);
     }
 
+    @Test
+    void testGetByIdNotFound() throws Exception {
+        RequestBuilder req = MockMvcRequestBuilders.get("/person/get/999");
+
+        ResultMatcher checkStatus = MockMvcResultMatchers.status().isNotFound();
+
+        this.mvc.perform(req).andExpect(checkStatus);
+    }
+
+
+    @Test
+    void testDeleteById() throws Exception {
+        RequestBuilder req = MockMvcRequestBuilders.delete("/person/remove/1");
+
+
+        ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
+        List<CatDTO> cats = List.of(
+                new CatDTO(1, "Tiddles", 12, "Black"),
+                new CatDTO(2, "Garfield", 46, "Orange")
+        );
+        PersonDTO found = new PersonDTO(1, "Jordan H", 30, "Trainer", cats);
+        String foundAsJSON = this.mapper.writeValueAsString(found);
+        ResultMatcher checkBody = MockMvcResultMatchers.content().json(foundAsJSON);
+
+
+        this.mvc.perform(req).andExpect(checkBody).andExpect(checkStatus);
+    }
+
+    @Test
+    void testUpdate() throws Exception {
+        RequestBuilder req = MockMvcRequestBuilders.patch("/person/update/2?name=PB&age=27");
+
+        ResultMatcher checkStatus = MockMvcResultMatchers.status().isOk();
+
+        PersonDTO found = new PersonDTO(2, "PB", 27, "Trainer", new ArrayList<>());
+        String foundAsJSON = this.mapper.writeValueAsString(found);
+        ResultMatcher checkBody = MockMvcResultMatchers.content().json(foundAsJSON);
+
+        this.mvc.perform(req).andExpect(checkBody).andExpect(checkStatus);
+    }
 }

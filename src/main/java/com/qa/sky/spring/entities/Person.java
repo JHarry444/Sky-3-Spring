@@ -17,7 +17,7 @@ public class Person {
     private int age;
     private String job;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     private List<Cat> cats;
 
     public Person() {
