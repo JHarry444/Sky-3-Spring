@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/person")
+@CrossOrigin
 public class PersonController {
 
 
@@ -18,7 +19,6 @@ public class PersonController {
     public PersonController(PersonService service) {
         this.service = service;
     }
-
 
 
     @GetMapping("/get/{id}")

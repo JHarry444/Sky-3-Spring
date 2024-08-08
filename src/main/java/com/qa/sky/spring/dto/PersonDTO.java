@@ -16,6 +16,14 @@ public class PersonDTO {
     public PersonDTO() {
     }
 
+    public PersonDTO(Integer id, String name, int age, String job, List<CatDTO> cats) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.job = job;
+        this.cats = cats;
+    }
+
     public PersonDTO(Person person) {
         this.id = person.getId();
         this.name = person.getName();
