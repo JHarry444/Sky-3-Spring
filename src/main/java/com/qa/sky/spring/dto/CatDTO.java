@@ -16,12 +16,18 @@ public class CatDTO {
     public CatDTO() {
     }
 
+    public CatDTO(Integer id, String name, int age, String furColour) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.furColour = furColour;
+    }
+
     public CatDTO(Cat cat) {
         this.id = cat.getId();
         this.name = cat.getName();
         this.age = cat.getAge();
         this.furColour = cat.getFurColour();
-
     }
 
     public Integer getId() {

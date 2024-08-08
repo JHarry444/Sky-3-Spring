@@ -17,7 +17,7 @@ public class Cat {
     private int age;
     private String furColour;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Person owner;
 
     public Cat(String name, int age, String furColour) {
